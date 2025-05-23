@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Google Fonts as fallback */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --foreground: #d4d4d4;
+  --background: #1e1e1e;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco',
+    'Courier New', monospace;
+}
+
+/* Dark theme (default) */
+[data-theme='dark'] {
+  --foreground: #d4d4d4;
+  --background: #1e1e1e;
+  --card-bg: #252526;
+  --border: #3e3e3e;
+  --hover-bg: #2a2d2e;
+  --sidebar-bg: #252526;
+  --tab-bg: #2d2d2d;
+  --tab-active-bg: #1e1e1e;
+  --input-bg: #1e1e1e;
+}
+
+/* Light theme */
+[data-theme='light'] {
+  --foreground: #383a42;
+  --background: #f3f3f3;
+  --card-bg: #ffffff;
+  --border: #e5e5e6;
+  --hover-bg: #e0e0e0;
+  --sidebar-bg: #f8f8f8;
+  --tab-bg: #ececec;
+  --tab-active-bg: #ffffff;
+  --input-bg: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-mono);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar for VS Code look */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #424242;
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* VS Code-like focus styles */
+*:focus {
+  outline: 1px solid #007fd4;
+  outline-offset: -1px;
+}
+
+.prose {
+  max-width: none;
+  color: var(--foreground);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: inherit;
+  font-weight: 600;
+}
+
+.prose h2 {
+  color: #4ec9b0;
+}
+
+[data-theme='light'] .prose h2 {
+  color: #0184bc;
+}
+
+.prose h3 {
+  color: #dcdcaa;
+}
+
+[data-theme='light'] .prose h3 {
+  color: #a626a4;
+}
+
+.prose p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose a {
+  color: #569cd6;
+  text-decoration: none;
+}
+
+[data-theme='light'] .prose a {
+  color: #4078f2;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.prose code {
+  background-color: var(--card-bg);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  border: 1px solid var(--border);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+/* Transitions */
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Theme-aware component styles */
+.card-bg {
+  background-color: var(--card-bg);
+}
+
+.border-theme {
+  border-color: var(--border);
+}
+
+.hover-bg {
+  background-color: var(--hover-bg);
+}
+
+/* Light theme specific overrides */
+[data-theme='light'] .bg-\[#252526\] {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme='light'] .bg-\[#1e1e1e\] {
+  background-color: var(--input-bg) !important;
+}
+
+[data-theme='light'] .border-\[#3e3e3e\] {
+  border-color: var(--border) !important;
+}
+
+[data-theme='light'] .hover\:bg-\[#2a2d2e\]:hover {
+  background-color: var(--hover-bg) !important;
+}
+
+[data-theme='light'] .text-\[#d4d4d4\] {
+  color: var(--foreground) !important;
+}
+
+[data-theme='light'] .text-\[#cccccc\] {
+  color: var(--foreground) !important;
+}
+
+[data-theme='light'] .text-\[#bbbbbb\] {
+  color: #6c6c6c !important;
+}
+
+/* VS Code colors that work in both themes */
+.text-vscode-blue {
+  color: #569cd6;
+}
+
+[data-theme='light'] .text-vscode-blue {
+  color: #4078f2;
+}
+
+.text-vscode-cyan {
+  color: #4ec9b0;
+}
+
+[data-theme='light'] .text-vscode-cyan {
+  color: #0184bc;
+}
+
+.text-vscode-yellow {
+  color: #dcdcaa;
+}
+
+[data-theme='light'] .text-vscode-yellow {
+  color: #a626a4;
+}
+
+.text-vscode-orange {
+  color: #ce9178;
+}
+
+[data-theme='light'] .text-vscode-orange {
+  color: #e45649;
+}
+
+/* Font family utilities */
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .text-4xl {
+    font-size: 1.75rem;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+
+  .p-6 {
+    padding: 1rem;
+  }
+
+  .gap-6 {
+    gap: 1rem;
+  }
+}
