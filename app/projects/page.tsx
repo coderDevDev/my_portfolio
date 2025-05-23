@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -33,6 +33,7 @@ export default function ProjectsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredProjects, setFilteredProjects] = useState(projects);
   const itemsPerPage = 6;
 
   // Get unique categories
@@ -42,54 +43,51 @@ export default function ProjectsPage() {
   ];
 
   // Filter and sort projects
-  const filteredAndSortedProjects = useMemo(() => {
-    let filtered = projects;
+  useEffect(() => {
+    let filtered = getProjectsByCategory(selectedCategory);
 
     // Apply search filter
     if (searchTerm) {
-      filtered = searchProjects(searchTerm);
-    }
-
-    // Apply category filter
-    if (selectedCategory !== 'all') {
       filtered = filtered.filter(
-        project => project.category === selectedCategory
+        project =>
+          project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          project.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          project.tags.some(tag =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
       );
     }
 
-    // Sort projects
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'featured':
-          if (a.featured && !b.featured) return -1;
-          if (!a.featured && b.featured) return 1;
-          return b.year - a.year;
-        case 'newest':
-          return b.year - a.year;
-        case 'oldest':
-          return a.year - b.year;
-        case 'name':
-          return a.title.localeCompare(b.title);
-        default:
-          return 0;
-      }
-    });
+    // Apply sorting
+    switch (sortBy) {
+      case 'recent':
+        filtered.sort((a, b) => b.year - a.year);
+        break;
+      case 'alphabetical':
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'featured':
+        filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        break;
+    }
 
-    return filtered;
+    setFilteredProjects(filtered);
+  }, [searchTerm, selectedCategory, sortBy]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
   }, [searchTerm, selectedCategory, sortBy]);
 
   // Pagination
-  const totalPages = Math.ceil(filteredAndSortedProjects.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedProjects = filteredAndSortedProjects.slice(
+  const paginatedProjects = filteredProjects.slice(
     startIndex,
     startIndex + itemsPerPage
   );
-
-  // Reset to first page when filters change
-  useState(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory, sortBy]);
 
   return (
     <div className="flex-1 overflow-auto">
@@ -141,16 +139,15 @@ export default function ProjectsPage() {
               </SelectTrigger>
               <SelectContent className="bg-[#252526] border-[#3e3e3e]">
                 <SelectItem value="featured">Featured First</SelectItem>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
-                <SelectItem value="name">Name A-Z</SelectItem>
+                <SelectItem value="recent">Recent First</SelectItem>
+                <SelectItem value="alphabetical">Name A-Z</SelectItem>
               </SelectContent>
             </Select>
 
             {/* Results Count */}
             <div className="flex items-center text-sm opacity-70">
-              {filteredAndSortedProjects.length} project
-              {filteredAndSortedProjects.length !== 1 ? 's' : ''} found
+              {filteredProjects.length} project
+              {filteredProjects.length !== 1 ? 's' : ''} found
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,12 +22,6 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
     setSelectedImage(null);
   };
 
-  const nextImage = () => {
-    if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % images.length);
-    }
-  };
-
   const prevImage = () => {
     if (selectedImage !== null) {
       setSelectedImage(
@@ -36,26 +30,39 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const nextImage = () => {
     if (selectedImage !== null) {
-      if (e.key === 'Escape') closeModal();
-      if (e.key === 'ArrowRight') nextImage();
-      if (e.key === 'ArrowLeft') prevImage();
+      setSelectedImage(
+        selectedImage === images.length - 1 ? 0 : selectedImage + 1
+      );
     }
   };
 
-  // Add keyboard event listeners
-  useState(() => {
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (selectedImage === null) return;
+
+      switch (e.key) {
+        case 'Escape':
+          closeModal();
+          break;
+        case 'ArrowLeft':
+          prevImage();
+          break;
+        case 'ArrowRight':
+          nextImage();
+          break;
+      }
+    };
+
     if (selectedImage !== null) {
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('keydown', handleKeyPress);
       document.body.style.overflow = 'hidden';
-    } else {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyPress);
       document.body.style.overflow = 'unset';
     };
   }, [selectedImage]);
@@ -66,67 +73,68 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
 
   return (
     <>
-      {/* Gallery Grid */}
-      <div className="mb-8">
-        <h3 className="text-xl font-bold text-[#dcdcaa] mb-4">
-          Project Gallery
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((image, index) => (
-            <Card
-              key={index}
-              className="relative group cursor-pointer overflow-hidden border border-[#3e3e3e] hover:border-[#569cd6] transition-all duration-300"
-              onClick={() => openModal(index)}>
-              <div className="relative h-48 w-full">
-                <Image
-                  src={image}
-                  alt={`${projectTitle} screenshot ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
-                  <ZoomIn className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </div>
-            </Card>
-          ))}
+      <Card className="bg-[#252526] border-[#3e3e3e] mb-8">
+        <div className="p-6">
+          {/* Gallery Grid */}
+          <div className="mb-8">
+            <h3 className="text-xl font-bold text-[#dcdcaa] mb-4">
+              Project Gallery
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {images.map((image, index) => (
+                <Card
+                  key={index}
+                  className="relative group cursor-pointer overflow-hidden border border-[#3e3e3e] hover:border-[#569cd6] transition-all duration-300"
+                  onClick={() => openModal(index)}>
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={image}
+                      alt={`${projectTitle} screenshot ${index + 1}`}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      </Card>
 
       {/* Modal */}
       {selectedImage !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
           {/* Close button */}
           <Button
             variant="ghost"
-            size="icon"
+            size="sm"
             className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
             onClick={closeModal}>
             <X className="h-6 w-6" />
           </Button>
 
           {/* Navigation buttons */}
-          {images.length > 1 && (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/20"
-                onClick={prevImage}>
-                <ChevronLeft className="h-8 w-8" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/20"
-                onClick={nextImage}>
-                <ChevronRight className="h-8 w-8" />
-              </Button>
-            </>
-          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/20"
+            onClick={prevImage}>
+            <ChevronLeft className="h-8 w-8" />
+          </Button>
 
-          {/* Image container */}
-          <div className="relative max-w-[90vw] max-h-[90vh] w-full h-full flex items-center justify-center p-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/20"
+            onClick={nextImage}>
+            <ChevronRight className="h-8 w-8" />
+          </Button>
+
+          {/* Image */}
+          <div className="relative max-w-[90vw] max-h-[90vh] w-full h-full">
             <div className="relative w-full h-full">
               <Image
                 src={images[selectedImage]}

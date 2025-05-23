@@ -63,8 +63,8 @@ export default function Home() {
                   size="lg"
                   variant="outline"
                   className="border-[#3e3e3e] hover:bg-[#2a2d2e]">
-                  <Link href="/contact">
-                    <Mail className="mr-2 h-5 w-5" /> Contact Me
+                  <Link href="/resume">
+                    <Download className="mr-2 h-4 w-4" /> View Resume
                   </Link>
                 </Button>
               </div>
@@ -121,7 +121,7 @@ export default function Home() {
                   </div>
                   <div className="relative w-full h-48 md:h-auto rounded-lg overflow-hidden">
                     <Image
-                      src="https://btmcdhltlvydssuebwir.supabase.co/storage/v1/object/public/others//DEX.JPG"
+                      src="https://btmcdhltlvydssuebwir.supabase.co/storage/v1/object/public/others/dexter_miranda_portfolio/10ec69e2-aa4c-4c57-9950-6effe4abcc3a.jpg"
                       alt="Dexter Miranda"
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
