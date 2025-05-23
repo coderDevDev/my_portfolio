@@ -399,38 +399,12 @@ export default function Home() {
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <Link
-                    href="mailto:dexter.miranda@example.com"
+                    href="mailto:newdexm@gmail.com"
                     className="flex flex-col items-center p-4 bg-[#2d2d2d] rounded-lg hover:bg-[#3e3e3e] transition-colors dark:bg-[#2d2d2d] dark:hover:bg-[#3e3e3e] light:bg-[#f5f5f5] light:hover:bg-[#e0e0e0]">
                     <Mail className="h-10 w-10 text-[#569cd6] dark:text-[#569cd6] light:text-[#4078f2] mb-3" />
                     <h3 className="font-medium mb-1">Email</h3>
-                    <p className="text-sm text-center">
-                      dexter.miranda@example.com
-                    </p>
+                    <p className="text-sm text-center">newdexm@gmail.com</p>
                   </Link>
-
-                  <a
-                    href="https://github.com/dextermiranda"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center p-4 bg-[#2d2d2d] rounded-lg hover:bg-[#3e3e3e] transition-colors dark:bg-[#2d2d2d] dark:hover:bg-[#3e3e3e] light:bg-[#f5f5f5] light:hover:bg-[#e0e0e0]">
-                    <Github className="h-10 w-10 text-[#569cd6] dark:text-[#569cd6] light:text-[#4078f2] mb-3" />
-                    <h3 className="font-medium mb-1">GitHub</h3>
-                    <p className="text-sm text-center">
-                      github.com/dextermiranda
-                    </p>
-                  </a>
-
-                  <a
-                    href="https://linkedin.com/in/dextermiranda"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center p-4 bg-[#2d2d2d] rounded-lg hover:bg-[#3e3e3e] transition-colors dark:bg-[#2d2d2d] dark:hover:bg-[#3e3e3e] light:bg-[#f5f5f5] light:hover:bg-[#e0e0e0]">
-                    <Linkedin className="h-10 w-10 text-[#569cd6] dark:text-[#569cd6] light:text-[#4078f2] mb-3" />
-                    <h3 className="font-medium mb-1">LinkedIn</h3>
-                    <p className="text-sm text-center">
-                      linkedin.com/in/dextermiranda
-                    </p>
-                  </a>
                 </div>
               </CardContent>
             </Card>
